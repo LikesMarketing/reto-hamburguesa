@@ -939,23 +939,9 @@
                 prizeNumber: gameState.playerData.prizeNumber
             };
             
-            
-console.log("Enviando a Google Sheets:", participantData);
-fetch("https://script.google.com/macros/s/AKfycbyd4z8YPpnc0kWy-s56cix2oh05wX1uOr9_6tdnl4Qdj7VoeOYBdSs4jBya7NU_CBs/exec", {
-    method: "POST",
-    body: JSON.stringify(participantData),
-    headers: {
-        "Content-Type": "application/json"
-    }
-}).then(res => {
-    console.log("Respuesta de Google Sheets:", res);
-    return res.text();
-}).then(text => {
-    console.log("Texto de respuesta:", text);
-}).catch(err => {
-    console.error("Error al enviar a Google Sheets:", err);
-});
-    
+            participants.push(participantData);
+            saveParticipantsData();
+            updateParticipantsTable();
             
             // Update results screen
             finalScoreElement.textContent = gameState.score;
@@ -1074,7 +1060,7 @@ fetch("https://script.google.com/macros/s/AKfycbyd4z8YPpnc0kWy-s56cix2oh05wX1uOr
             welcomeScreen.classList.remove("hidden");
         }
         
-       function updateParticipantsTable() {
+        function updateParticipantsTable() {
     participantsTableBody.innerHTML = "";
 
     participants.forEach(participant => {
@@ -1096,7 +1082,26 @@ fetch("https://script.google.com/macros/s/AKfycbyd4z8YPpnc0kWy-s56cix2oh05wX1uOr
     });
 
     participantCount.textContent = `${participants.length} participantes`;
-}
+}</td>                `;
+                
+                participantsTableBody.appendChild(row);
+            });
+            
+            participantCount.textContent = `${participants.length} participantes`;
+        }
+        
+        function saveParticipantsData() {
+            localStorage.setItem('gameParticipants', JSON.stringify(participants));
+        }
+        
+        function clearParticipantsData() {
+            if (confirm("¿Estás seguro de que deseas borrar todos los datos de participantes?")) {
+                participants = [];
+                saveParticipantsData();
+                updateParticipantsTable();
+                showToast("Datos borrados correctamente");
+            }
+        }
         
         function addSampleData() {
             const sampleData = [
