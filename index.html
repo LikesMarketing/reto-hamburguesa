@@ -939,8 +939,18 @@
                 prizeNumber: gameState.playerData.prizeNumber
             };
             
-            participants.push(participantData);
-            saveParticipantsData();
+            
+participants.push(participantData);
+            
+    // Enviar datos a Google Sheets
+    fetch("https://script.google.com/macros/s/AKfycbxNNqqIMBfMeZUTxBfHuJw28AfJXhOvj__41Bmk1z5wuaU80-G8kEhdUwFMRS4zVcH1/exec", {
+        method: "POST",
+        body: JSON.stringify(participantData),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+saveParticipantsData();
             updateParticipantsTable();
             
             // Update results screen
