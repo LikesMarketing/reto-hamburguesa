@@ -948,7 +948,9 @@
         headers: {
             "Content-Type": "application/json"
         }
-    });
+    }).then(response => response.text())
+      .then(result => console.log("Enviado a Google Sheets:", result))
+      .catch(error => console.error("Error al enviar a Sheets:", error));
 saveParticipantsData();
             updateParticipantsTable();
             
