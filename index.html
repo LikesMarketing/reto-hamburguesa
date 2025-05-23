@@ -942,7 +942,7 @@
             participants.push(participantData);
             
     // Enviar datos a Google Sheets
-    fetch("https://script.google.com/macros/s/AKfycbxNNqqIMBfMeZUTxBfHuJw28AfJXhOvj__41Bmk1z5wuaU80-G8kEhdUwFMRS4zVcH1/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbx0q3HEcg5c5FaJEyobgpl2-IG5aTiTahhHHVwCs0O45q2Wvep66uUqtwAe6M0396FR/exec", {
         method: "POST",
         body: JSON.stringify(participantData),
         headers: {
@@ -1071,7 +1071,8 @@ saveParticipantsData();
             welcomeScreen.classList.remove("hidden");
         }
         
-        function updateParticipantsTable() {
+        
+function updateParticipantsTable() {
     participantsTableBody.innerHTML = "";
 
     participants.forEach(participant => {
@@ -1093,7 +1094,8 @@ saveParticipantsData();
     });
 
     participantCount.textContent = `${participants.length} participantes`;
-}</td>                `;
+}
+</td>                `;
                 
                 participantsTableBody.appendChild(row);
             });
