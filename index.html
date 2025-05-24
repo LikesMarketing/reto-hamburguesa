@@ -494,7 +494,11 @@
 <table class="excel-table">
 <thead>
 <tr>
-<th>ID</th><th>Fecha</th><th>Alias</th><th>Puntaje</th><th>Premio</th><th>Nº Premio</th>
+<th>ID</th>
+<th>Fecha</th>
+<th>Nombre</th>
+<th>Apellido</th>
+<th>WhatsApp</th>
 <th>Alias</th>
 <th>Puntaje</th>
 <th>Premio</th>
@@ -541,9 +545,7 @@
             timeLeft: 60,
             maxTime: 60,
             playerData: {
-                name: "",
-                lastname: "",
-                whatsapp: "",
+                
                 alias: "",
                 prizeNumber: ""
             },
@@ -660,7 +662,21 @@ function validateAndShowInstructions() {
 }
     
             
+            // Store player data
+            gameState.playerData = {
+                name,
+                lastname,
+                whatsapp,
+                alias,
+                prizeNumber: generatePrizeNumber()
+            };
             
+            // Display the player's name in the game screen
+            playerNameDisplay.textContent = alias;
+            
+            welcomeScreen.classList.add("hidden");
+            instructionsModal.classList.remove("hidden");
+        }
         
         function highlightField(fieldId) {
             const field = document.getElementById(fieldId);
@@ -857,7 +873,20 @@ function validateAndShowInstructions() {
             };
             
             
-
+fetch("", {
+    method: "POST",
+    body: JSON.stringify(participantData),
+    headers: {
+        "Content-Type": "application/json"
+    }
+}).then(res => {
+    console.log("Respuesta de Google Sheets:", res);
+    return res.text();
+}).then(text => {
+    console.log("Texto de respuesta:", text);
+}).catch(err => {
+    console.error("Error al enviar a Google Sheets:", err);
+});
     
             
             // Update results screen
@@ -977,23 +1006,15 @@ function validateAndShowInstructions() {
             welcomeScreen.classList.remove("hidden");
         }
         
-        function 
-updateParticipantsTable() {
-    participantsTableBody.innerHTML = "";
-    participants.forEach(participant => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${participant.id}</td>
-            <td>${participant.date}</td>
-            <td>${participant.alias}</td>
-            <td>${participant.score}</td>
-            <td>${participant.prize}</td>
-            <td>${participant.prizeNumber}</td>
-        `;
-        participantsTableBody.appendChild(row);
-    });
-    participantCount.textContent = `${participants.length} participantes`;
-
+        function updateParticipantsTable() {
+            participantsTableBody.innerHTML = "";
+            
+            participants.forEach(participant => {
+                const row = document.createElement("tr");
+                
+                row.innerHTML = `                    <td>${participant.alias}</td>                `;
+                
+                participantsTableBody.appendChild(row);
             });
             
             participantCount.textContent = `${participants.length} participantes`;
@@ -1017,9 +1038,7 @@ updateParticipantsTable() {
                 {
                     id: participants.length + 1,
                     date: new Date().toLocaleString(),
-                    name: "Juan",
-                    lastname: "Pérez",
-                    whatsapp: "1155667788",
+                    
                     alias: "BurgerMaster",
                     score: 320,
                     prize: "🍔 Una Burcheddar gratis",
@@ -1028,9 +1047,7 @@ updateParticipantsTable() {
                 {
                     id: participants.length + 2,
                     date: new Date().toLocaleString(),
-                    name: "María",
-                    lastname: "González",
-                    whatsapp: "1144332211",
+                    
                     alias: "FriesQueen",
                     score: 185,
                     prize: "🎫 Vale 2x1 de hamburguesa",
@@ -1039,9 +1056,7 @@ updateParticipantsTable() {
                 {
                     id: participants.length + 3,
                     date: new Date().toLocaleString(),
-                    name: "Carlos",
-                    lastname: "Rodríguez",
-                    whatsapp: "1122334455",
+                    
                     alias: "CheeseKing",
                     score: 75,
                     prize: "🍟 1 PAPA FRITA GRATIS por la compra de una hamburguesa",
@@ -1050,9 +1065,7 @@ updateParticipantsTable() {
                 {
                     id: participants.length + 4,
                     date: new Date().toLocaleString(),
-                    name: "Laura",
-                    lastname: "Martínez",
-                    whatsapp: "1133557799",
+                    
                     alias: "BurgerFan",
                     score: 45,
                     prize: "👍 SEGUÍ PARTICIPANDO",
@@ -1069,10 +1082,11 @@ updateParticipantsTable() {
         function exportToExcel() {
             // Create CSV content
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "ID,Fecha,Nombre,Apellido,WhatsApp,Alias,Puntaje,Premio,Nº Premio\n";
+            csvContent += "ID,Fecha,Alias,Puntaje,Premio,Nº Premio
+";
             
             participants.forEach(participant => {
-                csvContent += `${participant.id},${participant.date},"${participant.name}","${participant.lastname}",${participant.whatsapp},"${participant.alias}",${participant.score},"${participant.prize}",${participant.prizeNumber}\n`;
+                csvContent += `${participant.id},${participant.date},${participant.alias},"${participant.alias}",${participant.score},"${participant.prize}",${participant.prizeNumber}\n`;
             });
             
             // Create download link
