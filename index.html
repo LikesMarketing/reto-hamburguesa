@@ -367,7 +367,7 @@
 </div>
 </div>
 </div>
-</div>
+<div class="mt-6 bg-white p-4 rounded-xl shadow-md" id="ranking-container"><h3 class="text-xl font-bold text-center mb-4">Ranking de Jugadores (Top 5)</h3><table class="w-full text-sm text-left text-gray-700"><thead><tr><th class="px-4 py-2 font-semibold">#</th><th class="px-4 py-2 font-semibold">Alias</th><th class="px-4 py-2 font-semibold">Puntaje</th></tr></thead><tbody id="ranking-body"></tbody></table></div></div>
 <!-- Prize Claim Screen -->
 <div class="hidden min-h-screen p-4 flex flex-col items-center justify-center screen-transition" id="prize-screen">
 <div class="absolute inset-0 overflow-hidden" id="confetti-container">
@@ -644,23 +644,25 @@
         // Update participants table on load
         updateParticipantsTable();
 
-        function validateAndShowInstructions() {
-            // Get form data
-            const name = document.getElementById("reg-name").value.trim();
-            const lastname = document.getElementById("reg-lastname").value.trim();
-            const whatsapp = document.getElementById("reg-whatsapp").value.trim();
-            const alias = document.getElementById("player-alias").value.trim();
-            
-            // Validate form
-            if (!name || !lastname || !whatsapp || !alias) {
-                // Highlight empty fields
-                if (!name) highlightField("reg-name");
-                if (!lastname) highlightField("reg-lastname");
-                if (!whatsapp) highlightField("reg-whatsapp");
-                if (!alias) highlightField("player-alias");
-                
-                return;
-            }
+        
+function validateAndShowInstructions() {
+    const alias = document.getElementById("player-alias").value.trim();
+    if (!alias) {
+        highlightField("player-alias");
+        return;
+    }
+
+    gameState.playerData = {
+        alias: alias,
+        prizeNumber: generatePrizeNumber()
+    };
+
+    playerNameDisplay.textContent = alias;
+
+    welcomeScreen.classList.add("hidden");
+    instructionsModal.classList.remove("hidden");
+}
+    
             
             // Store player data
             gameState.playerData = {
@@ -865,11 +867,7 @@
             
             // Save participant data
             const participantData = {
-                id: participants.length + 1,
-                date: new Date().toLocaleString(),
-                name: gameState.playerData.name,
-                lastname: gameState.playerData.lastname,
-                whatsapp: gameState.playerData.whatsapp,
+    id: participants.length + 1,
                 alias: gameState.playerData.alias,
                 score: gameState.score,
                 prize: getPrizeDescription(gameState.score),
@@ -1141,5 +1139,44 @@ fetch("https://script.google.com/macros/s/AKfycbyd4z8YPpnc0kWy-s56cix2oh05wX1uOr
             }, 4000);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94406b79a3399c0f',t:'MTc0Nzk1OTk2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94406b79a3399c0f',t:'MTc0Nzk1OTk2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
+
+function updateRanking() {
+    const top5 = [...participants]
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 5);
+
+    const tbody = document.getElementById("ranking-body");
+    tbody.innerHTML = "";
+    top5.forEach((p, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td class="px-4 py-2 font-bold">${index + 1}</td>
+            <td class="px-4 py-2">${p.alias}</td>
+            <td class="px-4 py-2">${p.score}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function validateAndShowInstructions() {
+    const alias = document.getElementById("player-alias").value.trim();
+    if (!alias) {
+        highlightField("player-alias");
+        return;
+    }
+
+    gameState.playerData = {
+        alias: alias,
+        prizeNumber: generatePrizeNumber()
+    };
+
+    playerNameDisplay.textContent = alias;
+
+    welcomeScreen.classList.add("hidden");
+    instructionsModal.classList.remove("hidden");
+}
+        
+document.getElementById("start-button").addEventListener("click", validateAndShowInstructions);
+        </script></body>
 </html> 
