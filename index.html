@@ -1,159 +1,1205 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reto Hamburguesa</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f8f8f8;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-    }
-    input, button {
-      margin: 10px 0;
-      padding: 10px;
-      width: 90%;
-      font-size: 16px;
-    }
-    @media (max-width: 600px) {
-      input, button {
-        font-size: 14px;
-      }
-    }
-    button[disabled] {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Reto de la Hamburguesa - Urbana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Poppins:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFF8E1;
+            overflow-x: hidden;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .game-title {
+            font-family: 'Lilita One', cursive;
+        }
+        
+        .food-bg {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.7;
+            animation: float 8s infinite ease-in-out;
+            z-index: -1;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+        
+        .falling-food {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            animation: fall linear forwards;
+            z-index: 10;
+            cursor: pointer;
+        }
+        
+        .supreme-burger {
+            filter: drop-shadow(0 0 8px gold);
+            animation: glow 1s infinite alternate;
+            font-size: 3.5rem;
+        }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px gold); }
+            to { filter: drop-shadow(0 0 15px gold); }
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-100px); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        .score-popup {
+            position: absolute;
+            animation: popup 1s forwards;
+            font-weight: bold;
+            z-index: 20;
+            text-shadow: 0px 0px 3px rgba(0,0,0,0.5);
+        }
+        
+        @keyframes popup {
+            0% { transform: scale(0.5); opacity: 0; }
+            20% { transform: scale(1.2); opacity: 1; }
+            80% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        .pulse {
+            animation: pulse 0.5s;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .timer-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(#ef4444 var(--progress), #f3f4f6 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.1s linear;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .timer-circle::before {
+            content: "";
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            display: block;
+        }
+        
+        .timer-text {
+            position: absolute;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .screen-transition {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Excel-like table styles */
+        .excel-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .excel-table th {
+            background-color: #f3f3f3;
+            border: 1px solid #e0e0e0;
+            padding: 8px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .excel-table td {
+            border: 1px solid #e0e0e0;
+            padding: 6px 8px;
+            background-color: white;
+        }
+        
+        .excel-table tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+        
+        .excel-table tr:hover td {
+            background-color: #f0f7ff;
+        }
+        
+        .excel-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        .excel-header {
+            background-color: #107c41;
+            color: white;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .excel-footer {
+            background-color: #f3f3f3;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .excel-tab {
+            background-color: #107c41;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px 4px 0 0;
+            font-size: 14px;
+        }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            animation: slideUp 0.3s, fadeOut 0.5s 3.5s forwards;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translate(-50%, 100px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        
+        /* Social media button */
+        .social-button {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .social-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        
+        .social-button svg {
+            margin-right: 8px;
+        }
+        
+        /* Confetti animation */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+            animation: confetti-fall 5s ease-in-out forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Fix for prize instructions display */
+        .prize-instructions {
+            text-align: left;
+            margin-bottom: 0;
+            padding: 0;
+        }
+        
+        .prize-instructions li {
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Reto Hamburguesa</h1>
-    <form id="registroForm">
-      <input type="text" id="nombre" placeholder="Nombre" required>
-      <input type="text" id="apellido" placeholder="Apellido" required>
-      <input type="tel" id="whatsapp" placeholder="WhatsApp" required>
-      <input type="text" id="alias" placeholder="Alias" required>
-      <button type="submit" id="btnIniciar">Iniciar Juego</button>
-    </form>
-
-    <div id="juego" style="display:none;">
-      <p>Tiempo: <span id="tiempo">60</span> segundos</p>
-      <p>Puntaje: <span id="puntaje">0</span></p>
-      <button onclick="finalizarJuego()">Finalizar Manual</button>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="relative min-h-screen flex flex-col items-center justify-center p-6 overflow-hidden screen-transition">
+        <div class="absolute inset-0 overflow-hidden">
+            <!-- Animated background elements - Only hamburgers and fries -->
+            <div class="food-bg" style="top: 10%; left: 10%;">🍔</div>
+            <div class="food-bg" style="top: 30%; left: 80%; animation-delay: -2s;">🍟</div>
+            <div class="food-bg" style="top: 70%; left: 20%; animation-delay: -4s;">🍔</div>
+            <div class="food-bg" style="top: 60%; left: 70%; animation-delay: -6s;">🍟</div>
+            <div class="food-bg" style="top: 20%; left: 30%; animation-delay: -1s;">🍔</div>
+            <div class="food-bg" style="top: 50%; left: 85%; animation-delay: -3s;">🍟</div>
+            <div class="food-bg" style="top: 80%; left: 40%; animation-delay: -5s;">🍔</div>
+            <div class="food-bg" style="top: 15%; left: 55%; animation-delay: -2.5s;">🍟</div>
+            <div class="food-bg" style="top: 45%; left: 15%; animation-delay: -3.5s;">🍔</div>
+            <div class="food-bg" style="top: 75%; left: 60%; animation-delay: -1.5s;">🍟</div>
+            <div class="food-bg" style="top: 25%; left: 75%; animation-delay: -4.5s;">🍔</div>
+            <div class="food-bg" style="top: 85%; left: 25%; animation-delay: -5.5s;">🍟</div>
+            <div class="food-bg" style="top: 35%; left: 45%; animation-delay: -6.5s;">🍔</div>
+            <div class="food-bg" style="top: 55%; left: 35%; animation-delay: -7.5s;">🍟</div>
+            <div class="food-bg" style="top: 65%; left: 90%; animation-delay: -8.5s;">🍔</div>
+            <div class="food-bg" style="top: 5%; left: 95%; animation-delay: -9.5s;">🍟</div>
+            <div class="food-bg" style="top: 95%; left: 5%; animation-delay: -10.5s;">🍔</div>
+        </div>
+        
+        <div class="bg-white bg-opacity-90 rounded-xl shadow-xl p-8 max-w-md w-full z-10">
+            <h1 class="game-title text-4xl mb-2 text-amber-600 text-center">El Reto de la Hamburguesa</h1>
+            <h2 class="text-xl font-bold mb-4 text-center text-red-600">¡EN URBANA CELEBRAMOS EL DÍA DE LA HAMBURGUESA JUGANDO!</h2>
+            
+            <p class="text-lg mb-6 text-center">Atrapá todas las hamburguesas y papas fritas que puedas para ganar premios deliciosos.</p>
+            
+            <form id="registration-form" class="space-y-4 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="reg-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                        <input type="text" id="reg-name" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                    </div>
+                    
+                    <div>
+                        <label for="reg-lastname" class="block text-sm font-medium text-gray-700 mb-1">Apellido</label>
+                        <input type="text" id="reg-lastname" name="lastname" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="reg-whatsapp" class="block text-sm font-medium text-gray-700 mb-1">Número de WhatsApp</label>
+                    <input type="tel" id="reg-whatsapp" name="whatsapp" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                </div>
+                
+                <div>
+                    <label for="player-alias" class="block text-sm font-medium text-gray-700 mb-1">Tu alias de jugador</label>
+                    <input type="text" id="player-alias" name="alias" placeholder="Ingresá un nombre divertido para el juego" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                </div>
+                
+                <p class="text-xs text-gray-500 italic">Tus datos serán utilizados únicamente para contactarte en caso de que ganes un premio.</p>
+            </form>
+            
+            <button id="start-button" class="w-full bg-red-600 hover:bg-red-700 text-white text-xl font-bold py-4 px-8 rounded-full shadow-lg transform transition hover:scale-105" onclick="startGame()">
+                👉 ¡Jugar ahora!
+            </button>
+        </div>
     </div>
-  </div>
 
-  <script>
-    let puntaje = 0;
-    let tiempoRestante = 60;
-    let temporizador;
-    let datosJugador = {};
+    <!-- Game Screen -->
+    <div id="game-screen" class="hidden min-h-screen relative overflow-hidden screen-transition">
+        <div class="fixed top-0 left-0 right-0 bg-white bg-opacity-90 p-4 flex justify-between items-center shadow-md z-20">
+            <div>
+                <div class="text-sm font-semibold text-gray-600">JUGADOR</div>
+                <div id="player-name" class="text-xl font-bold text-red-600"></div>
+            </div>
+            
+            <div class="timer-circle" style="--progress: 100%;">
+                <span id="timer" class="timer-text">60</span>
+            </div>
+            
+            <div>
+                <div class="text-sm font-semibold text-gray-600">PUNTOS</div>
+                <div id="score" class="text-2xl font-bold text-red-600">0</div>
+            </div>
+        </div>
+        
+        <div id="game-area" class="pt-20 h-screen w-full">
+            <!-- Falling food will appear here -->
+        </div>
+    </div>
 
-    const btnIniciar = document.getElementById('btnIniciar');
+    <!-- Results Screen -->
+    <div id="results-screen" class="hidden min-h-screen p-4 flex flex-col items-center justify-center screen-transition">
+        <div class="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full">
+            <div class="text-center mb-6">
+                <h2 class="game-title text-3xl text-amber-600 mb-2">¡Juego terminado!</h2>
+                <p class="text-lg">¡Bien jugado! Aquí está tu resultado:</p>
+            </div>
+            
+            <div class="bg-gradient-to-r from-amber-500 to-red-500 rounded-xl p-6 text-center text-white mb-6">
+                <div class="text-xl font-semibold mb-1">Jugador</div>
+                <div id="player-result-name" class="text-2xl font-bold mb-4"></div>
+                
+                <div class="text-xl font-semibold mb-1">Puntaje final</div>
+                <div id="final-score" class="text-5xl font-bold mb-4">0</div>
+                
+                <div class="text-xl font-semibold mb-1">Tu premio</div>
+                <div id="prize-description" class="text-2xl font-bold"></div>
+            </div>
+            
+            <div class="text-center mb-6">
+                <button id="claim-prize-button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition hover:scale-105">
+                    Canjear mi premio
+                </button>
+            </div>
+            
+            <div class="text-center">
+                <p class="text-gray-600 mb-4">¡Compartí tu experiencia!</p>
+                <a href="https://instagram.com/" target="_blank" id="share-instagram" class="social-button mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    Compartir en Instagram
+                </a>
+                
+                <p class="text-sm text-gray-500 italic">Compartí en tu historia y mencioná a @pizza_urbana en Instagram</p>
+                
+                <div class="mt-4">
+                    <button id="play-again-button" class="text-amber-600 hover:text-amber-800 font-semibold">
+                        Jugar de nuevo
+                    </button>
+                    
+                    <span class="mx-2 text-gray-400">|</span>
+                    
+                    <button id="admin-button" class="text-sm text-gray-500 hover:text-gray-700">
+                        Administración
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    document.getElementById('registroForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+    <!-- Prize Claim Screen -->
+    <div id="prize-screen" class="hidden min-h-screen p-4 flex flex-col items-center justify-center screen-transition">
+        <div id="confetti-container" class="absolute inset-0 overflow-hidden">
+            <!-- Confetti will be added here -->
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full z-10">
+            <div class="text-center mb-6">
+                <h2 class="game-title text-3xl text-amber-600 mb-2">¡Tu premio te espera!</h2>
+                <p class="text-lg">Mostrá este código en cualquier local de Urbana para canjear tu premio:</p>
+            </div>
+            
+            <div class="bg-gradient-to-r from-amber-500 to-red-500 rounded-xl p-6 text-center text-white mb-6">
+                <div class="text-xl font-semibold mb-1">Tu premio</div>
+                <div id="prize-name" class="text-2xl font-bold mb-4"></div>
+                
+                <div class="mt-4 bg-white text-gray-800 p-4 rounded-lg">
+                    <div class="text-sm font-semibold mb-1">Tu número de canje es:</div>
+                    <div id="prize-number" class="text-3xl font-bold text-red-600"></div>
+                    <div class="text-xs text-gray-600 mt-1">Válido hasta el 31 de Mayo de 2025</div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button id="back-to-results" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition hover:scale-105">
+                    Volver a resultados
+                </button>
+            </div>
+        </div>
+    </div>
 
-      btnIniciar.disabled = true;
+    <!-- Instructions Modal -->
+    <div id="instructions-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 screen-transition">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full">
+            <h3 class="game-title text-2xl text-amber-600 mb-4">¿Cómo jugar?</h3>
+            
+            <div class="space-y-4">
+                <p>¡Atrapá solo las hamburguesas y papas fritas para sumar puntos! Evitá el resto de comidas.</p>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="flex items-center bg-green-100 p-2 rounded-lg">
+                        <span class="text-2xl mr-2">🍔</span>
+                        <span class="font-bold text-green-700">+5 puntos</span>
+                    </div>
+                    <div class="flex items-center bg-green-100 p-2 rounded-lg">
+                        <span class="text-2xl mr-2">🍟</span>
+                        <span class="font-bold text-green-700">+3 puntos</span>
+                    </div>
+                    <div class="flex items-center bg-yellow-100 p-2 rounded-lg">
+                        <span class="text-2xl mr-2">👑🍔</span>
+                        <span class="font-bold text-yellow-700">+10 puntos</span>
+                    </div>
+                    <div class="flex items-center bg-red-100 p-2 rounded-lg">
+                        <span class="text-2xl mr-2">🌭</span>
+                        <span class="font-bold text-red-700">-2 puntos</span>
+                    </div>
+                    <div class="flex items-center bg-red-100 p-2 rounded-lg">
+                        <span class="text-2xl mr-2">🥪</span>
+                        <span class="font-bold text-red-700">-2 puntos</span>
+                    </div>
+                </div>
+                
+                <div class="bg-amber-100 p-3 rounded-lg mt-4">
+                    <h4 class="font-bold text-amber-800 mb-2">¡Premios!</h4>
+                    <ul class="prize-instructions text-sm text-amber-900 pl-4">
+                        <li>• De 50 a 99 puntos: 1 PAPA FRITA GRATIS por la compra de una hamburguesa</li>
+                        <li>• De 100 a 299 puntos: Vale 2x1 de hamburguesa</li>
+                        <li>• 300 puntos o más: Una Burcheddar gratis</li>
+                    </ul>
+                </div>
+                
+                <p>¡Tenés 60 segundos para conseguir la mayor cantidad de puntos!</p>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <button id="start-game-button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition hover:scale-105">
+                    ¡Entendido, a jugar!
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Login Modal -->
+    <div id="admin-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 screen-transition">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full">
+            <h3 class="text-2xl font-bold mb-4">Acceso Administrador</h3>
+            
+            <form id="admin-form" class="space-y-4">
+                <div>
+                    <label for="admin-password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                    <input type="password" id="admin-password" placeholder="Ingresá la contraseña de administrador" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div class="flex justify-between pt-2">
+                    <button type="button" id="admin-cancel" class="text-gray-600 hover:underline">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg">
+                        Ingresar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Admin Dashboard Screen -->
+    <div id="admin-screen" class="hidden min-h-screen bg-gray-100 p-4 screen-transition">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold">Panel de Administración - Participantes</h1>
+                <button id="admin-logout" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">
+                    Volver al juego
+                </button>
+            </div>
+            
+            <!-- Excel-like table for participants -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="excel-header">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span>Participantes_Reto_Hamburguesa.xlsx</span>
+                    </div>
+                    <div>
+                        <button id="export-excel" class="bg-white text-green-800 hover:bg-gray-100 text-sm py-1 px-3 rounded">
+                            Exportar Excel
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="excel-tab">
+                    Participantes
+                </div>
+                
+                <div class="excel-container">
+                    <table class="excel-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>WhatsApp</th>
+                                <th>Alias</th>
+                                <th>Puntaje</th>
+                                <th>Premio</th>
+                                <th>Nº Premio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="participants-table-body">
+                            <!-- Participant data will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="excel-footer">
+                    <span id="participant-count">0 participantes</span>
+                    <div class="flex items-center">
+                        <button id="clear-data" class="text-red-600 hover:text-red-800 text-sm mr-4">
+                            Borrar datos
+                        </button>
+                        <button id="add-sample-data" class="text-blue-600 hover:text-blue-800 text-sm">
+                            Agregar datos de muestra
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 bg-white p-4 rounded-lg shadow">
+                <h3 class="font-bold mb-2">Instrucciones:</h3>
+                <p class="text-sm text-gray-600">
+                    Esta tabla muestra todos los participantes que se han registrado en el juego. Los datos se almacenan temporalmente en el navegador.
+                    Para exportar los datos a Excel, haz clic en el botón "Exportar Excel". Para borrar todos los datos, haz clic en "Borrar datos".
+                </p>
+                <p class="text-sm text-gray-600 mt-2">
+                    <strong>Nota:</strong> Los datos se utilizan para el canje de premios en los locales de Urbana.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden">
+        <!-- Toast content will be dynamically inserted -->
+    </div>
 
-      const nombre = document.getElementById('nombre').value.trim();
-      const apellido = document.getElementById('apellido').value.trim();
-      const whatsapp = document.getElementById('whatsapp').value.trim();
-      const alias = document.getElementById('alias').value.trim();
+    <script>
+        // Game state
+        const gameState = {
+            score: 0,
+            timeLeft: 60,
+            maxTime: 60,
+            playerData: {
+                name: "",
+                lastname: "",
+                whatsapp: "",
+                alias: "",
+                prizeNumber: ""
+            },
+            gameInterval: null,
+            foodInterval: null,
+            difficultyLevel: 1,
+            fallSpeed: 4.5, // Base fall speed in seconds
+            spawnRate: 900, // Base spawn rate in milliseconds
+            lastDifficultyIncrease: 0, // Time since last difficulty increase
+            phrases: [
+                "¡Crack del cheddar! 🧀",
+                "¡Mordida legendaria! 🍔",
+                "¡Papas perfectas! 🍟",
+                "¡Nivel God de hamburguesas! 👑",
+                "¡Combo perfecto desbloqueado! 🎉",
+                "¡Hambre + habilidad = vos! 🔥",
+                "¡Sos el Messi de las hamburguesas! ⚽",
+                "¡Una más y llegás al récord! 🏁",
+                "¡Sabor y puntos en uno! 🤤",
+                "¡Sos un chef digital! 👨‍🍳"
+            ],
+            // Define prizes based on score thresholds - Updated with corrected values
+            prizes: [
+                { minScore: 300, description: "🍔 Una Burcheddar gratis" },
+                { minScore: 100, description: "🎫 Vale 2x1 de hamburguesa" },
+                { minScore: 50, description: "🍟 1 PAPA FRITA GRATIS por la compra de una hamburguesa" },
+                { minScore: 0, description: "👍 SEGUÍ PARTICIPANDO" }
+            ]
+        };
 
-      if (!nombre || !apellido || !whatsapp || !alias) {
-        alert('Por favor, completa todos los campos.');
-        btnIniciar.disabled = false;
-        return;
-      }
+        // Food items with their point values
+        const foodItems = [
+            { emoji: "🍔", points: 5, name: "hamburguesa", good: true },
+            { emoji: "🍟", points: 3, name: "papas fritas", good: true },
+            { emoji: "👑🍔", points: 10, name: "hamburguesa suprema", good: true, supreme: true },
+            { emoji: "🌭", points: -2, name: "pancho", good: false },
+            { emoji: "🥪", points: -2, name: "sándwich", good: false },
+            { emoji: "🌮", points: -2, name: "taco", good: false },
+            { emoji: "🍕", points: -2, name: "pizza", good: false },
+            { emoji: "🥓", points: -2, name: "bacon", good: false }
+        ];
 
-      const whatsappRegex = /^\+?\d{7,15}$/;
-      if (!whatsappRegex.test(whatsapp)) {
-        alert('Por favor, ingresa un número de WhatsApp válido (ej: +595981234567).');
-        btnIniciar.disabled = false;
-        return;
-      }
+        // Participants data storage
+        let participants = [];
+        
+        // Load participants from localStorage if available
+        if (localStorage.getItem('gameParticipants')) {
+            try {
+                participants = JSON.parse(localStorage.getItem('gameParticipants'));
+            } catch (e) {
+                console.error('Error loading participants data:', e);
+                participants = [];
+            }
+        }
 
-      datosJugador = { nombre, apellido, whatsapp, alias };
-      iniciarJuego();
-    });
+        // DOM elements
+        const welcomeScreen = document.getElementById("welcome-screen");
+        const gameScreen = document.getElementById("game-screen");
+        const resultsScreen = document.getElementById("results-screen");
+        const prizeScreen = document.getElementById("prize-screen");
+        const instructionsModal = document.getElementById("instructions-modal");
+        const adminModal = document.getElementById("admin-modal");
+        const adminScreen = document.getElementById("admin-screen");
+        const scoreElement = document.getElementById("score");
+        const timerElement = document.getElementById("timer");
+        const timerCircle = document.querySelector(".timer-circle");
+        const gameArea = document.getElementById("game-area");
+        const playerNameDisplay = document.getElementById("player-name");
+        const finalScoreElement = document.getElementById("final-score");
+        const playerResultNameElement = document.getElementById("player-result-name");
+        const participantsTableBody = document.getElementById("participants-table-body");
+        const participantCount = document.getElementById("participant-count");
+        const toast = document.getElementById("toast");
+        const prizeDescription = document.getElementById("prize-description");
+        const prizeName = document.getElementById("prize-name");
+        const prizeNumber = document.getElementById("prize-number");
+        const registrationForm = document.getElementById("registration-form");
+        const confettiContainer = document.getElementById("confetti-container");
 
-    function iniciarJuego() {
-      document.getElementById('registroForm').style.display = 'none';
-      document.getElementById('juego').style.display = 'block';
-      puntaje = 0;
-      tiempoRestante = 60;
-      document.getElementById('puntaje').textContent = puntaje;
-      document.getElementById('tiempo').textContent = tiempoRestante;
-      temporizador = setInterval(actualizarTiempo, 1000);
-    }
+        // Event listeners
+        document.getElementById("start-button").addEventListener("click", validateAndShowInstructions);
+        document.getElementById("start-game-button").addEventListener("click", startGame);
+        document.getElementById("play-again-button").addEventListener("click", resetGame);
+        document.getElementById("claim-prize-button").addEventListener("click", showPrizeScreen);
+        document.getElementById("back-to-results").addEventListener("click", backToResults);
+        document.getElementById("admin-button").addEventListener("click", showAdminModal);
+        document.getElementById("admin-form").addEventListener("submit", handleAdminLogin);
+        document.getElementById("admin-cancel").addEventListener("click", hideAdminModal);
+        document.getElementById("admin-logout").addEventListener("click", hideAdminScreen);
+        document.getElementById("export-excel").addEventListener("click", exportToExcel);
+        document.getElementById("clear-data").addEventListener("click", clearParticipantsData);
+        document.getElementById("add-sample-data").addEventListener("click", addSampleData);
 
-    function actualizarTiempo() {
-      tiempoRestante--;
-      document.getElementById('tiempo').textContent = tiempoRestante;
-      if (tiempoRestante <= 0) {
-        clearInterval(temporizador);
-        finalizarJuego();
-      }
-    }
+        // Update participants table on load
+        updateParticipantsTable();
 
-    function finalizarJuego() {
-      clearInterval(temporizador);
-      let mensaje;
-      let premio;
+        function validateAndShowInstructions() {
+            // Get form data
+            const name = document.getElementById("reg-name").value.trim();
+            const lastname = document.getElementById("reg-lastname").value.trim();
+            const whatsapp = document.getElementById("reg-whatsapp").value.trim();
+            const alias = document.getElementById("player-alias").value.trim();
+            
+            // Validate form
+            if (!name || !lastname || !whatsapp || !alias) {
+                // Highlight empty fields
+                if (!name) highlightField("reg-name");
+                if (!lastname) highlightField("reg-lastname");
+                if (!whatsapp) highlightField("reg-whatsapp");
+                if (!alias) highlightField("player-alias");
+                
+                return;
+            }
+            
+            // Store player data
+            gameState.playerData = {
+                name,
+                lastname,
+                whatsapp,
+                alias,
+                prizeNumber: generatePrizeNumber()
+            };
+            
+            // Display the player's name in the game screen
+            playerNameDisplay.textContent = alias;
+            
+            welcomeScreen.classList.add("hidden");
+            instructionsModal.classList.remove("hidden");
+        }
+        
+        function highlightField(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.classList.add("border-red-500", "ring-1", "ring-red-500");
+            
+            // Remove highlight after a delay
+            setTimeout(() => {
+                field.classList.remove("border-red-500", "ring-1", "ring-red-500");
+            }, 2000);
+        }
+        
+        function generatePrizeNumber() {
+            // Generate a random 6-digit number
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
 
-      if (puntaje >= 300) {
-        mensaje = '🎉 ¡Sos una leyenda de las hamburguesas! Premio máximo desbloqueado.';
-        premio = 'Una Burcheddar gratis';
-      } else if (puntaje >= 100) {
-        mensaje = '🍔 ¡Excelente trabajo! Te ganaste un 2x1 en hamburguesas.';
-        premio = 'Vale 2x1';
-      } else if (puntaje >= 50) {
-        mensaje = '🍟 ¡Buen intento! Te ganaste una papa frita por la compra de una hamburguesa.';
-        premio = 'Papa frita gratis';
-      } else {
-        mensaje = '👍 ¡Seguí practicando! Cada intento te acerca más al premio.';
-        premio = 'Seguí participando';
-      }
-
-      // Enviar datos a Google Sheets
-      const datosFinales = {
-        nombre: datosJugador.nombre,
-        apellido: datosJugador.apellido,
-        whatsapp: datosJugador.whatsapp,
-        alias: datosJugador.alias,
-        puntaje: puntaje,
-        premio: premio
-      };
-
-      fetch("https://script.google.com/macros/s/AKfycbwTaxOuzR_wU2iDgzvwg0jqXmb2PGK8b0BLIXQI_XZFPiyIbUJw6b2VsvAJFNl_KOAA/exec", {
+        function startGame() {
+            instructionsModal.classList.add("hidden");
+            gameScreen.classList.remove("hidden");
+            
+            // Reset game state
+            gameState.score = 0;
+            gameState.timeLeft = gameState.maxTime;
+            gameState.difficultyLevel = 1;
+            gameState.fallSpeed = 4.5;
+            gameState.spawnRate = 900;
+            gameState.lastDifficultyIncrease = 0;
+            
+            // Update UI
+            scoreElement.textContent = gameState.score;
+            timerElement.textContent = gameState.timeLeft;
+            updateTimerCircle();
+            
+            // Start game loops
+            gameState.gameInterval = setInterval(updateGame, 1000);
+            gameState.foodInterval = setInterval(spawnFood, gameState.spawnRate);
+        }
+        
+        function updateGame() {
+            gameState.timeLeft--;
+            timerElement.textContent = gameState.timeLeft;
+            updateTimerCircle();
+            
+            // Increase difficulty over time
+            gameState.lastDifficultyIncrease++;
+            if (gameState.lastDifficultyIncrease >= 10) {
+                increaseDifficulty();
+                gameState.lastDifficultyIncrease = 0;
+            }
+            
+            if (gameState.timeLeft <= 0) {
+                endGame();
+            }
+        }
+        
+        function updateTimerCircle() {
+            const progress = (gameState.timeLeft / gameState.maxTime) * 100;
+            timerCircle.style.setProperty('--progress', `${progress}%`);
+            
+            // Change color based on time left
+            if (gameState.timeLeft <= 10) {
+                timerCircle.style.background = `conic-gradient(#ef4444 ${progress}%, #f3f4f6 0deg)`;
+            } else if (gameState.timeLeft <= 30) {
+                timerCircle.style.background = `conic-gradient(#f59e0b ${progress}%, #f3f4f6 0deg)`;
+            } else {
+                timerCircle.style.background = `conic-gradient(#10b981 ${progress}%, #f3f4f6 0deg)`;
+            }
+        }
+        
+        function increaseDifficulty() {
+            gameState.difficultyLevel++;
+            
+            // Increase spawn rate (decrease interval)
+            clearInterval(gameState.foodInterval);
+            gameState.spawnRate = Math.max(300, gameState.spawnRate - 100);
+            gameState.foodInterval = setInterval(spawnFood, gameState.spawnRate);
+            
+            // Decrease fall speed (make items fall faster)
+            gameState.fallSpeed = Math.max(1.5, gameState.fallSpeed - 0.5);
+        }
+        
+        function spawnFood() {
+            // Select a random food item
+            let foodIndex;
+            const random = Math.random();
+            
+            if (random < 0.05) {
+                // 5% chance for supreme burger
+                foodIndex = foodItems.findIndex(item => item.supreme);
+            } else if (random < 0.4) {
+                // 35% chance for regular burger
+                foodIndex = foodItems.findIndex(item => item.emoji === "🍔");
+            } else if (random < 0.7) {
+                // 30% chance for fries
+                foodIndex = foodItems.findIndex(item => item.emoji === "🍟");
+            } else {
+                // 30% chance for bad items
+                const badItems = foodItems.filter(item => !item.good);
+                foodIndex = foodItems.indexOf(badItems[Math.floor(Math.random() * badItems.length)]);
+            }
+            
+            const food = foodItems[foodIndex];
+            
+            // Create food element
+            const foodElement = document.createElement("div");
+            foodElement.className = "falling-food";
+            foodElement.innerHTML = food.emoji;
+            
+            if (food.supreme) {
+                foodElement.classList.add("supreme-burger");
+            }
+            
+            // Random horizontal position
+            const maxX = gameArea.clientWidth - 80;
+            const xPos = Math.floor(Math.random() * maxX);
+            foodElement.style.left = `${xPos}px`;
+            
+            // Set fall animation duration based on difficulty
+            const fallDuration = gameState.fallSpeed;
+            foodElement.style.animationDuration = `${fallDuration}s`;
+            
+            // Add to game area
+            gameArea.appendChild(foodElement);
+            
+            // Add click event
+            foodElement.addEventListener("click", () => {
+                catchFood(foodElement, food);
+            });
+            
+            // Remove after animation completes
+            setTimeout(() => {
+                if (foodElement.parentNode === gameArea) {
+                    gameArea.removeChild(foodElement);
+                }
+            }, fallDuration * 1000);
+        }
+        
+        function catchFood(element, food) {
+            // Remove the food element
+            if (element.parentNode === gameArea) {
+                gameArea.removeChild(element);
+            }
+            
+            // Update score
+            gameState.score += food.points;
+            gameState.score = Math.max(0, gameState.score); // Ensure score doesn't go below 0
+            scoreElement.textContent = gameState.score;
+            scoreElement.classList.add("pulse");
+            setTimeout(() => {
+                scoreElement.classList.remove("pulse");
+            }, 500);
+            
+            // Create score popup
+            const popup = document.createElement("div");
+            popup.className = "score-popup";
+            popup.style.left = element.style.left;
+            popup.style.top = element.getBoundingClientRect().top + "px";
+            
+            if (food.points > 0) {
+                popup.textContent = "+" + food.points;
+                popup.style.color = "#10b981";
+                
+                // Show random encouraging phrase for good catches
+                if (Math.random() < 0.3) {
+                    showToast(gameState.phrases[Math.floor(Math.random() * gameState.phrases.length)]);
+                }
+            } else {
+                popup.textContent = food.points;
+                popup.style.color = "#ef4444";
+            }
+            
+            document.body.appendChild(popup);
+            
+            // Remove popup after animation
+            setTimeout(() => {
+                if (popup.parentNode === document.body) {
+                    document.body.removeChild(popup);
+                }
+            }, 1000);
+        }
+        
+        function endGame() {
+            // Clear intervals
+            clearInterval(gameState.gameInterval);
+            clearInterval(gameState.foodInterval);
+            
+            // Save participant data
+            const participantData = {
+                id: participants.length + 1,
+                date: new Date().toLocaleString(),
+                name: gameState.playerData.name,
+                lastname: gameState.playerData.lastname,
+                whatsapp: gameState.playerData.whatsapp,
+                alias: gameState.playerData.alias,
+                score: gameState.score,
+                prize: getPrizeDescription(gameState.score),
+                prizeNumber: gameState.playerData.prizeNumber
+            };
+            
+            participants.push(participantData);
+            
+    // Enviar datos a Google Sheets
+    fetch("https://script.google.com/macros/s/AKfycbyIAXYMXyuM4f7yMJcOxTmtzkkYvzqM-Xh5ai5kzHweh8mi1h0oH6D6Fams4qlBRK3-/exec", {
         method: "POST",
+        body: JSON.stringify(participantData),
         headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(datosFinales)
-      })
-      .then(response => response.text())
-      .then(data => {
-        console.log("Datos enviados: ", data);
-        alert(`Juego terminado. Tu puntaje es: ${puntaje}.\n${mensaje}`);
-        location.reload();
-      })
-      .catch(error => {
-        console.error("Error al enviar los datos:", error);
-        alert(`Juego terminado. Tu puntaje es: ${puntaje}.\n${mensaje}`);
-        location.reload();
-      });
-    }
-  </script>
-</body>
-</html>
+            "Content-Type": "application/json"
+        }
+    }).then(response => response.text())
+      .then(result => console.log("Enviado a Google Sheets:", result))
+      .catch(error => console.error("Error al enviar a Sheets:", error));
+saveParticipantsData();
+            updateParticipantsTable();
+            
+            // Update results screen
+            finalScoreElement.textContent = gameState.score;
+            playerResultNameElement.textContent = gameState.playerData.alias;
+            prizeDescription.textContent = getPrizeDescription(gameState.score);
+            
+            // Show results screen
+            gameScreen.classList.add("hidden");
+            resultsScreen.classList.remove("hidden");
+        }
+        
+        function getPrizeDescription(score) {
+            // Find the appropriate prize based on score
+            for (const prize of gameState.prizes) {
+                if (score >= prize.minScore) {
+                    return prize.description;
+                }
+            }
+            return gameState.prizes[gameState.prizes.length - 1].description;
+        }
+        
+        function showPrizeScreen() {
+            // Update prize screen
+            prizeName.textContent = prizeDescription.textContent;
+            prizeNumber.textContent = gameState.playerData.prizeNumber;
+            
+            // Show prize screen
+            resultsScreen.classList.add("hidden");
+            prizeScreen.classList.remove("hidden");
+            
+            // Create confetti effect if the prize is a Burcheddar
+            if (gameState.score >= 300) {
+                createConfetti();
+            }
+        }
+        
+        function backToResults() {
+            prizeScreen.classList.add("hidden");
+            resultsScreen.classList.remove("hidden");
+            
+            // Clear confetti
+            confettiContainer.innerHTML = "";
+        }
+        
+        function createConfetti() {
+            // Clear previous confetti
+            confettiContainer.innerHTML = "";
+            
+            // Create confetti pieces
+            const colors = ["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4CAF50", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800", "#FF5722"];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement("div");
+                confetti.className = "confetti";
+                confetti.style.left = Math.random() * 100 + "vw";
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + "px";
+                confetti.style.height = Math.random() * 10 + 5 + "px";
+                confetti.style.animationDuration = Math.random() * 3 + 2 + "s";
+                confetti.style.animationDelay = Math.random() * 2 + "s";
+                
+                confettiContainer.appendChild(confetti);
+            }
+        }
+        
+        function shareToInstagram() {
+            // Open Instagram in a new tab
+            window.open("https://instagram.com/", "_blank");
+            showToast("¡Gracias por compartir en Instagram! Mencioná a @pizza_urbana");
+        }
+        
+        function resetGame() {
+            // Clear game area
+            gameArea.innerHTML = "";
+            
+            // Reset to welcome screen
+            resultsScreen.classList.add("hidden");
+            prizeScreen.classList.add("hidden");
+            welcomeScreen.classList.remove("hidden");
+            
+            // Reset form
+            registrationForm.reset();
+        }
+        
+        function showAdminModal() {
+            adminModal.classList.remove("hidden");
+        }
+        
+        function hideAdminModal() {
+            adminModal.classList.add("hidden");
+            document.getElementById("admin-password").value = "";
+        }
+        
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const password = document.getElementById("admin-password").value;
+            
+            // Updated password check
+            if (password === "foxy2013") {
+                hideAdminModal();
+                showAdminScreen();
+            } else {
+                showToast("Contraseña incorrecta", "error");
+            }
+        }
+        
+        function showAdminScreen() {
+            resultsScreen.classList.add("hidden");
+            prizeScreen.classList.add("hidden");
+            welcomeScreen.classList.add("hidden");
+            adminScreen.classList.remove("hidden");
+        }
+        
+        function hideAdminScreen() {
+            adminScreen.classList.add("hidden");
+            welcomeScreen.classList.remove("hidden");
+        }
+        
+        function updateParticipantsTable() {
+            participantsTableBody.innerHTML = "";
+            
+            participants.forEach(participant => {
+                const row = document.createElement("tr");
+                
+                row.innerHTML = `                    <td>${participant.alias}</td>                `;
+                
+                participantsTableBody.appendChild(row);
+            });
+            
+            participantCount.textContent = `${participants.length} participantes`;
+        }
+        
+        function saveParticipantsData() {
+            localStorage.setItem('gameParticipants', JSON.stringify(participants));
+        }
+        
+        function clearParticipantsData() {
+            if (confirm("¿Estás seguro de que deseas borrar todos los datos de participantes?")) {
+                participants = [];
+                saveParticipantsData();
+                updateParticipantsTable();
+                showToast("Datos borrados correctamente");
+            }
+        }
+        
+        function addSampleData() {
+            const sampleData = [
+                {
+                    id: participants.length + 1,
+                    date: new Date().toLocaleString(),
+                    name: "Juan",
+                    lastname: "Pérez",
+                    whatsapp: "1155667788",
+                    alias: "BurgerMaster",
+                    score: 320,
+                    prize: "🍔 Una Burcheddar gratis",
+                    prizeNumber: "123456"
+                },
+                {
+                    id: participants.length + 2,
+                    date: new Date().toLocaleString(),
+                    name: "María",
+                    lastname: "González",
+                    whatsapp: "1144332211",
+                    alias: "FriesQueen",
+                    score: 185,
+                    prize: "🎫 Vale 2x1 de hamburguesa",
+                    prizeNumber: "654321"
+                },
+                {
+                    id: participants.length + 3,
+                    date: new Date().toLocaleString(),
+                    name: "Carlos",
+                    lastname: "Rodríguez",
+                    whatsapp: "1122334455",
+                    alias: "CheeseKing",
+                    score: 75,
+                    prize: "🍟 1 PAPA FRITA GRATIS por la compra de una hamburguesa",
+                    prizeNumber: "987654"
+                },
+                {
+                    id: participants.length + 4,
+                    date: new Date().toLocaleString(),
+                    name: "Laura",
+                    lastname: "Martínez",
+                    whatsapp: "1133557799",
+                    alias: "BurgerFan",
+                    score: 45,
+                    prize: "👍 SEGUÍ PARTICIPANDO",
+                    prizeNumber: "246810"
+                }
+            ];
+            
+            participants = [...participants, ...sampleData];
+            saveParticipantsData();
+            updateParticipantsTable();
+            showToast("Datos de muestra agregados");
+        }
+        
+        function exportToExcel() {
+            // Create CSV content
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "ID,Fecha,Nombre,Apellido,WhatsApp,Alias,Puntaje,Premio,Nº Premio\n";
+            
+            participants.forEach(participant => {
+                csvContent += `${participant.id},${participant.date},"${participant.name}","${participant.lastname}",${participant.whatsapp},"${participant.alias}",${participant.score},"${participant.prize}",${participant.prizeNumber}\n`;
+            });
+            
+            // Create download link
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Participantes_Reto_Hamburguesa.csv");
+            document.body.appendChild(link);
+            
+            // Trigger download
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast("Datos exportados correctamente");
+        }
+        
+        function showToast(message, type = "success") {
+            // Remove existing toast
+            if (toast.classList.contains("toast")) {
+                document.body.removeChild(toast);
+            }
+            
+            // Create new toast
+            const newToast = document.createElement("div");
+            newToast.className = "toast";
+            newToast.id = "toast";
+            
+            if (type === "error") {
+                newToast.style.backgroundColor = "#ef4444";
+            }
+            
+            newToast.textContent = message;
+            document.body.appendChild(newToast);
+            
+            // Remove toast after animation
+            setTimeout(() => {
+                if (newToast.parentNode === document.body) {
+                    document.body.removeChild(newToast);
+                }
+            }, 4000);
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94406b79a3399c0f',t:'MTc0Nzk1OTk2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html> 
