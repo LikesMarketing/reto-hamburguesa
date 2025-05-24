@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Reto de la Hamburguesa - Urbana</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>El Reto de la Hamburguesa - Urbana</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
         @import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Poppins:wght@400;600;700&display=swap');
         
         body {
@@ -275,333 +276,269 @@
     </style>
 </head>
 <body>
-    <!-- Welcome Screen -->
-    <div id="welcome-screen" class="relative min-h-screen flex flex-col items-center justify-center p-6 overflow-hidden screen-transition">
-        <div class="absolute inset-0 overflow-hidden">
-            <!-- Animated background elements - Only hamburgers and fries -->
-            <div class="food-bg" style="top: 10%; left: 10%;">🍔</div>
-            <div class="food-bg" style="top: 30%; left: 80%; animation-delay: -2s;">🍟</div>
-            <div class="food-bg" style="top: 70%; left: 20%; animation-delay: -4s;">🍔</div>
-            <div class="food-bg" style="top: 60%; left: 70%; animation-delay: -6s;">🍟</div>
-            <div class="food-bg" style="top: 20%; left: 30%; animation-delay: -1s;">🍔</div>
-            <div class="food-bg" style="top: 50%; left: 85%; animation-delay: -3s;">🍟</div>
-            <div class="food-bg" style="top: 80%; left: 40%; animation-delay: -5s;">🍔</div>
-            <div class="food-bg" style="top: 15%; left: 55%; animation-delay: -2.5s;">🍟</div>
-            <div class="food-bg" style="top: 45%; left: 15%; animation-delay: -3.5s;">🍔</div>
-            <div class="food-bg" style="top: 75%; left: 60%; animation-delay: -1.5s;">🍟</div>
-            <div class="food-bg" style="top: 25%; left: 75%; animation-delay: -4.5s;">🍔</div>
-            <div class="food-bg" style="top: 85%; left: 25%; animation-delay: -5.5s;">🍟</div>
-            <div class="food-bg" style="top: 35%; left: 45%; animation-delay: -6.5s;">🍔</div>
-            <div class="food-bg" style="top: 55%; left: 35%; animation-delay: -7.5s;">🍟</div>
-            <div class="food-bg" style="top: 65%; left: 90%; animation-delay: -8.5s;">🍔</div>
-            <div class="food-bg" style="top: 5%; left: 95%; animation-delay: -9.5s;">🍟</div>
-            <div class="food-bg" style="top: 95%; left: 5%; animation-delay: -10.5s;">🍔</div>
-        </div>
-        
-        <div class="bg-white bg-opacity-90 rounded-xl shadow-xl p-8 max-w-md w-full z-10">
-            <h1 class="game-title text-4xl mb-2 text-amber-600 text-center">El Reto de la Hamburguesa</h1>
-            <h2 class="text-xl font-bold mb-4 text-center text-red-600">¡EN URBANA CELEBRAMOS EL DÍA DE LA HAMBURGUESA JUGANDO!</h2>
-            
-            <p class="text-lg mb-6 text-center">Atrapá todas las hamburguesas y papas fritas que puedas para ganar premios deliciosos.</p>
-            
-            <form id="registration-form" class="space-y-4 mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="reg-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                        <input type="text" id="reg-name" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
-                    </div>
-                    
-                    <div>
-                        <label for="reg-lastname" class="block text-sm font-medium text-gray-700 mb-1">Apellido</label>
-                        <input type="text" id="reg-lastname" name="lastname" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
-                    </div>
-                </div>
-                
-                <div>
-                    <label for="reg-whatsapp" class="block text-sm font-medium text-gray-700 mb-1">Número de WhatsApp</label>
-                    <input type="tel" id="reg-whatsapp" name="whatsapp" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
-                </div>
-                
-                <div>
-                    <label for="player-alias" class="block text-sm font-medium text-gray-700 mb-1">Tu alias de jugador</label>
-                    <input type="text" id="player-alias" name="alias" placeholder="Ingresá un nombre divertido para el juego" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
-                </div>
-                
-                <p class="text-xs text-gray-500 italic">Tus datos serán utilizados únicamente para contactarte en caso de que ganes un premio.</p>
-            </form>
-            
-            <button id="start-button" class="w-full bg-red-600 hover:bg-red-700 text-white text-xl font-bold py-4 px-8 rounded-full shadow-lg transform transition hover:scale-105" onclick="startGame()">
+<!-- Welcome Screen -->
+<div class="relative min-h-screen flex flex-col items-center justify-center p-6 overflow-hidden screen-transition" id="welcome-screen">
+<div class="absolute inset-0 overflow-hidden">
+<!-- Animated background elements - Only hamburgers and fries -->
+<div class="food-bg" style="top: 10%; left: 10%;">🍔</div>
+<div class="food-bg" style="top: 30%; left: 80%; animation-delay: -2s;">🍟</div>
+<div class="food-bg" style="top: 70%; left: 20%; animation-delay: -4s;">🍔</div>
+<div class="food-bg" style="top: 60%; left: 70%; animation-delay: -6s;">🍟</div>
+<div class="food-bg" style="top: 20%; left: 30%; animation-delay: -1s;">🍔</div>
+<div class="food-bg" style="top: 50%; left: 85%; animation-delay: -3s;">🍟</div>
+<div class="food-bg" style="top: 80%; left: 40%; animation-delay: -5s;">🍔</div>
+<div class="food-bg" style="top: 15%; left: 55%; animation-delay: -2.5s;">🍟</div>
+<div class="food-bg" style="top: 45%; left: 15%; animation-delay: -3.5s;">🍔</div>
+<div class="food-bg" style="top: 75%; left: 60%; animation-delay: -1.5s;">🍟</div>
+<div class="food-bg" style="top: 25%; left: 75%; animation-delay: -4.5s;">🍔</div>
+<div class="food-bg" style="top: 85%; left: 25%; animation-delay: -5.5s;">🍟</div>
+<div class="food-bg" style="top: 35%; left: 45%; animation-delay: -6.5s;">🍔</div>
+<div class="food-bg" style="top: 55%; left: 35%; animation-delay: -7.5s;">🍟</div>
+<div class="food-bg" style="top: 65%; left: 90%; animation-delay: -8.5s;">🍔</div>
+<div class="food-bg" style="top: 5%; left: 95%; animation-delay: -9.5s;">🍟</div>
+<div class="food-bg" style="top: 95%; left: 5%; animation-delay: -10.5s;">🍔</div>
+</div>
+<div class="bg-white bg-opacity-90 rounded-xl shadow-xl p-8 max-w-md w-full z-10">
+<h1 class="game-title text-4xl mb-2 text-amber-600 text-center">El Reto de la Hamburguesa</h1>
+<h2 class="text-xl font-bold mb-4 text-center text-red-600">¡EN URBANA CELEBRAMOS EL DÍA DE LA HAMBURGUESA JUGANDO!</h2>
+<p class="text-lg mb-6 text-center">Atrapá todas las hamburguesas y papas fritas que puedas para ganar premios deliciosos.</p>
+<form class="space-y-4 mb-6" id="registration-form"><div><label class="block text-sm font-medium text-gray-700 mb-1" for="player-alias">Tu alias de jugador</label><input class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500" id="player-alias" name="alias" placeholder="Ingresá un nombre divertido para el juego" required="" type="text"/></div></form>
+<button class="w-full bg-red-600 hover:bg-red-700 text-white text-xl font-bold py-4 px-8 rounded-full shadow-lg transform transition hover:scale-105" id="start-button">
                 👉 ¡Jugar ahora!
             </button>
-        </div>
-    </div>
-
-    <!-- Game Screen -->
-    <div id="game-screen" class="hidden min-h-screen relative overflow-hidden screen-transition">
-        <div class="fixed top-0 left-0 right-0 bg-white bg-opacity-90 p-4 flex justify-between items-center shadow-md z-20">
-            <div>
-                <div class="text-sm font-semibold text-gray-600">JUGADOR</div>
-                <div id="player-name" class="text-xl font-bold text-red-600"></div>
-            </div>
-            
-            <div class="timer-circle" style="--progress: 100%;">
-                <span id="timer" class="timer-text">60</span>
-            </div>
-            
-            <div>
-                <div class="text-sm font-semibold text-gray-600">PUNTOS</div>
-                <div id="score" class="text-2xl font-bold text-red-600">0</div>
-            </div>
-        </div>
-        
-        <div id="game-area" class="pt-20 h-screen w-full">
-            <!-- Falling food will appear here -->
-        </div>
-    </div>
-
-    <!-- Results Screen -->
-    <div id="results-screen" class="hidden min-h-screen p-4 flex flex-col items-center justify-center screen-transition">
-        <div class="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full">
-            <div class="text-center mb-6">
-                <h2 class="game-title text-3xl text-amber-600 mb-2">¡Juego terminado!</h2>
-                <p class="text-lg">¡Bien jugado! Aquí está tu resultado:</p>
-            </div>
-            
-            <div class="bg-gradient-to-r from-amber-500 to-red-500 rounded-xl p-6 text-center text-white mb-6">
-                <div class="text-xl font-semibold mb-1">Jugador</div>
-                <div id="player-result-name" class="text-2xl font-bold mb-4"></div>
-                
-                <div class="text-xl font-semibold mb-1">Puntaje final</div>
-                <div id="final-score" class="text-5xl font-bold mb-4">0</div>
-                
-                <div class="text-xl font-semibold mb-1">Tu premio</div>
-                <div id="prize-description" class="text-2xl font-bold"></div>
-            </div>
-            
-            <div class="text-center mb-6">
-                <button id="claim-prize-button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition hover:scale-105">
+</div>
+</div>
+<!-- Game Screen -->
+<div class="hidden min-h-screen relative overflow-hidden screen-transition" id="game-screen">
+<div class="fixed top-0 left-0 right-0 bg-white bg-opacity-90 p-4 flex justify-between items-center shadow-md z-20">
+<div>
+<div class="text-sm font-semibold text-gray-600">JUGADOR</div>
+<div class="text-xl font-bold text-red-600" id="player-name"></div>
+</div>
+<div class="timer-circle" style="--progress: 100%;">
+<span class="timer-text" id="timer">60</span>
+</div>
+<div>
+<div class="text-sm font-semibold text-gray-600">PUNTOS</div>
+<div class="text-2xl font-bold text-red-600" id="score">0</div>
+</div>
+</div>
+<div class="pt-20 h-screen w-full" id="game-area">
+<!-- Falling food will appear here -->
+</div>
+</div>
+<!-- Results Screen -->
+<div class="hidden min-h-screen p-4 flex flex-col items-center justify-center screen-transition" id="results-screen">
+<div class="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full">
+<div class="text-center mb-6">
+<h2 class="game-title text-3xl text-amber-600 mb-2">¡Juego terminado!</h2>
+<p class="text-lg">¡Bien jugado! Aquí está tu resultado:</p>
+</div>
+<div class="bg-gradient-to-r from-amber-500 to-red-500 rounded-xl p-6 text-center text-white mb-6">
+<div class="text-xl font-semibold mb-1">Jugador</div>
+<div class="text-2xl font-bold mb-4" id="player-result-name"></div>
+<div class="text-xl font-semibold mb-1">Puntaje final</div>
+<div class="text-5xl font-bold mb-4" id="final-score">0</div>
+<div class="text-xl font-semibold mb-1">Tu premio</div>
+<div class="text-2xl font-bold" id="prize-description"></div>
+</div>
+<div class="text-center mb-6">
+<button class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition hover:scale-105" id="claim-prize-button">
                     Canjear mi premio
                 </button>
-            </div>
-            
-            <div class="text-center">
-                <p class="text-gray-600 mb-4">¡Compartí tu experiencia!</p>
-                <a href="https://instagram.com/" target="_blank" id="share-instagram" class="social-button mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
+</div>
+<div class="text-center">
+<p class="text-gray-600 mb-4">¡Compartí tu experiencia!</p>
+<a class="social-button mb-4" href="https://instagram.com/" id="share-instagram" target="_blank">
+<svg fill="white" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
+</svg>
                     Compartir en Instagram
                 </a>
-                
-                <p class="text-sm text-gray-500 italic">Compartí en tu historia y mencioná a @pizza_urbana en Instagram</p>
-                
-                <div class="mt-4">
-                    <button id="play-again-button" class="text-amber-600 hover:text-amber-800 font-semibold">
+<p class="text-sm text-gray-500 italic">Compartí en tu historia y mencioná a @pizza_urbana en Instagram</p>
+<div class="mt-4">
+<button class="text-amber-600 hover:text-amber-800 font-semibold" id="play-again-button">
                         Jugar de nuevo
                     </button>
-                    
-                    <span class="mx-2 text-gray-400">|</span>
-                    
-                    <button id="admin-button" class="text-sm text-gray-500 hover:text-gray-700">
+<span class="mx-2 text-gray-400">|</span>
+<button class="text-sm text-gray-500 hover:text-gray-700" id="admin-button">
                         Administración
                     </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Prize Claim Screen -->
-    <div id="prize-screen" class="hidden min-h-screen p-4 flex flex-col items-center justify-center screen-transition">
-        <div id="confetti-container" class="absolute inset-0 overflow-hidden">
-            <!-- Confetti will be added here -->
-        </div>
-        
-        <div class="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full z-10">
-            <div class="text-center mb-6">
-                <h2 class="game-title text-3xl text-amber-600 mb-2">¡Tu premio te espera!</h2>
-                <p class="text-lg">Mostrá este código en cualquier local de Urbana para canjear tu premio:</p>
-            </div>
-            
-            <div class="bg-gradient-to-r from-amber-500 to-red-500 rounded-xl p-6 text-center text-white mb-6">
-                <div class="text-xl font-semibold mb-1">Tu premio</div>
-                <div id="prize-name" class="text-2xl font-bold mb-4"></div>
-                
-                <div class="mt-4 bg-white text-gray-800 p-4 rounded-lg">
-                    <div class="text-sm font-semibold mb-1">Tu número de canje es:</div>
-                    <div id="prize-number" class="text-3xl font-bold text-red-600"></div>
-                    <div class="text-xs text-gray-600 mt-1">Válido hasta el 31 de Mayo de 2025</div>
-                </div>
-            </div>
-            
-            <div class="text-center">
-                <button id="back-to-results" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition hover:scale-105">
+</div>
+</div>
+</div>
+</div>
+<!-- Prize Claim Screen -->
+<div class="hidden min-h-screen p-4 flex flex-col items-center justify-center screen-transition" id="prize-screen">
+<div class="absolute inset-0 overflow-hidden" id="confetti-container">
+<!-- Confetti will be added here -->
+</div>
+<div class="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full z-10">
+<div class="text-center mb-6">
+<h2 class="game-title text-3xl text-amber-600 mb-2">¡Tu premio te espera!</h2>
+<p class="text-lg">Mostrá este código en cualquier local de Urbana para canjear tu premio:</p>
+</div>
+<div class="bg-gradient-to-r from-amber-500 to-red-500 rounded-xl p-6 text-center text-white mb-6">
+<div class="text-xl font-semibold mb-1">Tu premio</div>
+<div class="text-2xl font-bold mb-4" id="prize-name"></div>
+<div class="mt-4 bg-white text-gray-800 p-4 rounded-lg">
+<div class="text-sm font-semibold mb-1">Tu número de canje es:</div>
+<div class="text-3xl font-bold text-red-600" id="prize-number"></div>
+<div class="text-xs text-gray-600 mt-1">Válido hasta el 31 de Mayo de 2025</div>
+</div>
+</div>
+<div class="text-center">
+<button class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition hover:scale-105" id="back-to-results">
                     Volver a resultados
                 </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Instructions Modal -->
-    <div id="instructions-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 screen-transition">
-        <div class="bg-white rounded-xl p-6 max-w-md w-full">
-            <h3 class="game-title text-2xl text-amber-600 mb-4">¿Cómo jugar?</h3>
-            
-            <div class="space-y-4">
-                <p>¡Atrapá solo las hamburguesas y papas fritas para sumar puntos! Evitá el resto de comidas.</p>
-                
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="flex items-center bg-green-100 p-2 rounded-lg">
-                        <span class="text-2xl mr-2">🍔</span>
-                        <span class="font-bold text-green-700">+5 puntos</span>
-                    </div>
-                    <div class="flex items-center bg-green-100 p-2 rounded-lg">
-                        <span class="text-2xl mr-2">🍟</span>
-                        <span class="font-bold text-green-700">+3 puntos</span>
-                    </div>
-                    <div class="flex items-center bg-yellow-100 p-2 rounded-lg">
-                        <span class="text-2xl mr-2">👑🍔</span>
-                        <span class="font-bold text-yellow-700">+10 puntos</span>
-                    </div>
-                    <div class="flex items-center bg-red-100 p-2 rounded-lg">
-                        <span class="text-2xl mr-2">🌭</span>
-                        <span class="font-bold text-red-700">-2 puntos</span>
-                    </div>
-                    <div class="flex items-center bg-red-100 p-2 rounded-lg">
-                        <span class="text-2xl mr-2">🥪</span>
-                        <span class="font-bold text-red-700">-2 puntos</span>
-                    </div>
-                </div>
-                
-                <div class="bg-amber-100 p-3 rounded-lg mt-4">
-                    <h4 class="font-bold text-amber-800 mb-2">¡Premios!</h4>
-                    <ul class="prize-instructions text-sm text-amber-900 pl-4">
-                        <li>• De 50 a 99 puntos: 1 PAPA FRITA GRATIS por la compra de una hamburguesa</li>
-                        <li>• De 100 a 299 puntos: Vale 2x1 de hamburguesa</li>
-                        <li>• 300 puntos o más: Una Burcheddar gratis</li>
-                    </ul>
-                </div>
-                
-                <p>¡Tenés 60 segundos para conseguir la mayor cantidad de puntos!</p>
-            </div>
-            
-            <div class="mt-6 text-center">
-                <button id="start-game-button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition hover:scale-105">
+</div>
+</div>
+</div>
+<!-- Instructions Modal -->
+<div class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 screen-transition" id="instructions-modal">
+<div class="bg-white rounded-xl p-6 max-w-md w-full">
+<h3 class="game-title text-2xl text-amber-600 mb-4">¿Cómo jugar?</h3>
+<div class="space-y-4">
+<p>¡Atrapá solo las hamburguesas y papas fritas para sumar puntos! Evitá el resto de comidas.</p>
+<div class="grid grid-cols-2 gap-3">
+<div class="flex items-center bg-green-100 p-2 rounded-lg">
+<span class="text-2xl mr-2">🍔</span>
+<span class="font-bold text-green-700">+5 puntos</span>
+</div>
+<div class="flex items-center bg-green-100 p-2 rounded-lg">
+<span class="text-2xl mr-2">🍟</span>
+<span class="font-bold text-green-700">+3 puntos</span>
+</div>
+<div class="flex items-center bg-yellow-100 p-2 rounded-lg">
+<span class="text-2xl mr-2">👑🍔</span>
+<span class="font-bold text-yellow-700">+10 puntos</span>
+</div>
+<div class="flex items-center bg-red-100 p-2 rounded-lg">
+<span class="text-2xl mr-2">🌭</span>
+<span class="font-bold text-red-700">-2 puntos</span>
+</div>
+<div class="flex items-center bg-red-100 p-2 rounded-lg">
+<span class="text-2xl mr-2">🥪</span>
+<span class="font-bold text-red-700">-2 puntos</span>
+</div>
+</div>
+<div class="bg-amber-100 p-3 rounded-lg mt-4">
+<h4 class="font-bold text-amber-800 mb-2">¡Premios!</h4>
+<ul class="prize-instructions text-sm text-amber-900 pl-4">
+<li>• De 50 a 99 puntos: 1 PAPA FRITA GRATIS por la compra de una hamburguesa</li>
+<li>• De 100 a 299 puntos: Vale 2x1 de hamburguesa</li>
+<li>• 300 puntos o más: Una Burcheddar gratis</li>
+</ul>
+</div>
+<p>¡Tenés 60 segundos para conseguir la mayor cantidad de puntos!</p>
+</div>
+<div class="mt-6 text-center">
+<button class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition hover:scale-105" id="start-game-button">
                     ¡Entendido, a jugar!
                 </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Admin Login Modal -->
-    <div id="admin-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 screen-transition">
-        <div class="bg-white rounded-xl p-6 max-w-md w-full">
-            <h3 class="text-2xl font-bold mb-4">Acceso Administrador</h3>
-            
-            <form id="admin-form" class="space-y-4">
-                <div>
-                    <label for="admin-password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-                    <input type="password" id="admin-password" placeholder="Ingresá la contraseña de administrador" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                
-                <div class="flex justify-between pt-2">
-                    <button type="button" id="admin-cancel" class="text-gray-600 hover:underline">
+</div>
+</div>
+</div>
+<!-- Admin Login Modal -->
+<div class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 screen-transition" id="admin-modal">
+<div class="bg-white rounded-xl p-6 max-w-md w-full">
+<h3 class="text-2xl font-bold mb-4">Acceso Administrador</h3>
+<form class="space-y-4" id="admin-form">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="admin-password">Contraseña</label>
+<input class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" id="admin-password" placeholder="Ingresá la contraseña de administrador" type="password"/>
+</div>
+<div class="flex justify-between pt-2">
+<button class="text-gray-600 hover:underline" id="admin-cancel" type="button">
                         Cancelar
                     </button>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg">
+<button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg" type="submit">
                         Ingresar
                     </button>
-                </div>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Admin Dashboard Screen -->
-    <div id="admin-screen" class="hidden min-h-screen bg-gray-100 p-4 screen-transition">
-        <div class="max-w-6xl mx-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h1 class="text-2xl font-bold">Panel de Administración - Participantes</h1>
-                <button id="admin-logout" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">
+</div>
+</form>
+</div>
+</div>
+<!-- Admin Dashboard Screen -->
+<div class="hidden min-h-screen bg-gray-100 p-4 screen-transition" id="admin-screen">
+<div class="max-w-6xl mx-auto">
+<div class="flex justify-between items-center mb-6">
+<h1 class="text-2xl font-bold">Panel de Administración - Participantes</h1>
+<button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg" id="admin-logout">
                     Volver al juego
                 </button>
-            </div>
-            
-            <!-- Excel-like table for participants -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div class="excel-header">
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg>
-                        <span>Participantes_Reto_Hamburguesa.xlsx</span>
-                    </div>
-                    <div>
-                        <button id="export-excel" class="bg-white text-green-800 hover:bg-gray-100 text-sm py-1 px-3 rounded">
+</div>
+<!-- Excel-like table for participants -->
+<div class="bg-white rounded-lg shadow-lg overflow-hidden">
+<div class="excel-header">
+<div class="flex items-center">
+<svg class="mr-2" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+<polyline points="14 2 14 8 20 8"></polyline>
+<line x1="16" x2="8" y1="13" y2="13"></line>
+<line x1="16" x2="8" y1="17" y2="17"></line>
+<polyline points="10 9 9 9 8 9"></polyline>
+</svg>
+<span>Participantes_Reto_Hamburguesa.xlsx</span>
+</div>
+<div>
+<button class="bg-white text-green-800 hover:bg-gray-100 text-sm py-1 px-3 rounded" id="export-excel">
                             Exportar Excel
                         </button>
-                    </div>
-                </div>
-                
-                <div class="excel-tab">
+</div>
+</div>
+<div class="excel-tab">
                     Participantes
                 </div>
-                
-                <div class="excel-container">
-                    <table class="excel-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Fecha</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>WhatsApp</th>
-                                <th>Alias</th>
-                                <th>Puntaje</th>
-                                <th>Premio</th>
-                                <th>Nº Premio</th>
-                            </tr>
-                        </thead>
-                        <tbody id="participants-table-body">
-                            <!-- Participant data will be inserted here -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="excel-footer">
-                    <span id="participant-count">0 participantes</span>
-                    <div class="flex items-center">
-                        <button id="clear-data" class="text-red-600 hover:text-red-800 text-sm mr-4">
+<div class="excel-container">
+<table class="excel-table">
+<thead>
+<tr>
+<th>ID</th>
+<th>Fecha</th>
+<th>Nombre</th>
+<th>Apellido</th>
+<th>WhatsApp</th>
+<th>Alias</th>
+<th>Puntaje</th>
+<th>Premio</th>
+<th>Nº Premio</th>
+</tr>
+</thead>
+<tbody id="participants-table-body">
+<!-- Participant data will be inserted here -->
+</tbody>
+</table>
+</div>
+<div class="excel-footer">
+<span id="participant-count">0 participantes</span>
+<div class="flex items-center">
+<button class="text-red-600 hover:text-red-800 text-sm mr-4" id="clear-data">
                             Borrar datos
                         </button>
-                        <button id="add-sample-data" class="text-blue-600 hover:text-blue-800 text-sm">
+<button class="text-blue-600 hover:text-blue-800 text-sm" id="add-sample-data">
                             Agregar datos de muestra
                         </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-6 bg-white p-4 rounded-lg shadow">
-                <h3 class="font-bold mb-2">Instrucciones:</h3>
-                <p class="text-sm text-gray-600">
+</div>
+</div>
+</div>
+<div class="mt-6 bg-white p-4 rounded-lg shadow">
+<h3 class="font-bold mb-2">Instrucciones:</h3>
+<p class="text-sm text-gray-600">
                     Esta tabla muestra todos los participantes que se han registrado en el juego. Los datos se almacenan temporalmente en el navegador.
                     Para exportar los datos a Excel, haz clic en el botón "Exportar Excel". Para borrar todos los datos, haz clic en "Borrar datos".
                 </p>
-                <p class="text-sm text-gray-600 mt-2">
-                    <strong>Nota:</strong> Los datos se utilizan para el canje de premios en los locales de Urbana.
+<p class="text-sm text-gray-600 mt-2">
+<strong>Nota:</strong> Los datos se utilizan para el canje de premios en los locales de Urbana.
                 </p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Toast Notification -->
-    <div id="toast" class="hidden">
-        <!-- Toast content will be dynamically inserted -->
-    </div>
-
-    <script>
+</div>
+</div>
+</div>
+<!-- Toast Notification -->
+<div class="hidden" id="toast">
+<!-- Toast content will be dynamically inserted -->
+</div>
+<script>
         // Game state
         const gameState = {
             score: 0,
@@ -939,20 +876,23 @@
                 prizeNumber: gameState.playerData.prizeNumber
             };
             
-            participants.push(participantData);
             
-    // Enviar datos a Google Sheets
-    fetch("https://script.google.com/macros/s/AKfycby9GZrCh5JZYlQa9pgKV9ALDjq-CuYuxmkSJlKEVild8JPVxn1dJ7GKT8e4A-r-Tb8H/exec", {
-        method: "POST",
-        body: JSON.stringify(participantData),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(response => response.text())
-      .then(result => console.log("Enviado a Google Sheets:", result))
-      .catch(error => console.error("Error al enviar a Sheets:", error));
-saveParticipantsData();
-            updateParticipantsTable();
+console.log("Enviando a Google Sheets:", participantData);
+fetch("https://script.google.com/macros/s/AKfycbyd4z8YPpnc0kWy-s56cix2oh05wX1uOr9_6tdnl4Qdj7VoeOYBdSs4jBya7NU_CBs/exec", {
+    method: "POST",
+    body: JSON.stringify(participantData),
+    headers: {
+        "Content-Type": "application/json"
+    }
+}).then(res => {
+    console.log("Respuesta de Google Sheets:", res);
+    return res.text();
+}).then(text => {
+    console.log("Texto de respuesta:", text);
+}).catch(err => {
+    console.error("Error al enviar a Google Sheets:", err);
+});
+    
             
             // Update results screen
             finalScoreElement.textContent = gameState.score;
