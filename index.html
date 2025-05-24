@@ -941,8 +941,19 @@
             
             participants.push(participantData);
             
+    
     // Enviar datos a Google Sheets
     fetch("https://script.google.com/macros/s/AKfycbyIAXYMXyuM4f7yMJcOxTmtzkkYvzqM-Xh5ai5kzHweh8mi1h0oH6D6Fams4qlBRK3-/exec", {
+        method: "POST",
+        body: JSON.stringify(participantData),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => response.text())
+      .then(result => console.log("Enviado a Google Sheets:", result))
+      .catch(error => console.error("Error al enviar a Sheets:", error));
+// Enviar datos a Google Sheets
+    fetch("https://script.google.com/macros/s/AKfycbx0q3HEcg5c5FaJEyobgpl2-IG5aTiTahhHHVwCs0O45q2Wvep66uUqtwAe6M0396FR/exec", {
         method: "POST",
         body: JSON.stringify(participantData),
         headers: {
@@ -1072,12 +1083,28 @@ saveParticipantsData();
         }
         
         function updateParticipantsTable() {
-            participantsTableBody.innerHTML = "";
-            
-            participants.forEach(participant => {
-                const row = document.createElement("tr");
-                
-                row.innerHTML = `                    <td>${participant.alias}</td>                `;
+    participantsTableBody.innerHTML = "";
+
+    participants.forEach(participant => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${participant.id}</td>
+            <td>${participant.date}</td>
+            <td>${participant.name}</td>
+            <td>${participant.lastname}</td>
+            <td>${participant.whatsapp}</td>
+            <td>${participant.alias}</td>
+            <td>${participant.score}</td>
+            <td>${participant.prize}</td>
+            <td>${participant.prizeNumber}</td>
+        `;
+
+        participantsTableBody.appendChild(row);
+    });
+
+    participantCount.textContent = `${participants.length} participantes`;
+}</td>                `;
                 
                 participantsTableBody.appendChild(row);
             });
@@ -1201,5 +1228,5 @@ saveParticipantsData();
             }, 4000);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94406b79a3399c0f',t:'MTc0Nzk1OTk2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html> 
