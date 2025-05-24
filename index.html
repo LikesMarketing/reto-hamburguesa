@@ -494,11 +494,7 @@
 <table class="excel-table">
 <thead>
 <tr>
-<th>ID</th>
-<th>Fecha</th>
-<th>Nombre</th>
-<th>Apellido</th>
-<th>WhatsApp</th>
+<th>ID</th><th>Fecha</th><th>Alias</th><th>Puntaje</th><th>Premio</th><th>Nº Premio</th>
 <th>Alias</th>
 <th>Puntaje</th>
 <th>Premio</th>
@@ -664,21 +660,7 @@ function validateAndShowInstructions() {
 }
     
             
-            // Store player data
-            gameState.playerData = {
-                name,
-                lastname,
-                whatsapp,
-                alias,
-                prizeNumber: generatePrizeNumber()
-            };
             
-            // Display the player's name in the game screen
-            playerNameDisplay.textContent = alias;
-            
-            welcomeScreen.classList.add("hidden");
-            instructionsModal.classList.remove("hidden");
-        }
         
         function highlightField(fieldId) {
             const field = document.getElementById(fieldId);
@@ -875,20 +857,7 @@ function validateAndShowInstructions() {
             };
             
             
-fetch("", {
-    method: "POST",
-    body: JSON.stringify(participantData),
-    headers: {
-        "Content-Type": "application/json"
-    }
-}).then(res => {
-    console.log("Respuesta de Google Sheets:", res);
-    return res.text();
-}).then(text => {
-    console.log("Texto de respuesta:", text);
-}).catch(err => {
-    console.error("Error al enviar a Google Sheets:", err);
-});
+
     
             
             // Update results screen
@@ -1008,15 +977,23 @@ fetch("", {
             welcomeScreen.classList.remove("hidden");
         }
         
-        function updateParticipantsTable() {
-            participantsTableBody.innerHTML = "";
-            
-            participants.forEach(participant => {
-                const row = document.createElement("tr");
-                
-                row.innerHTML = `                    <td>${participant.alias}</td>                `;
-                
-                participantsTableBody.appendChild(row);
+        function 
+updateParticipantsTable() {
+    participantsTableBody.innerHTML = "";
+    participants.forEach(participant => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${participant.id}</td>
+            <td>${participant.date}</td>
+            <td>${participant.alias}</td>
+            <td>${participant.score}</td>
+            <td>${participant.prize}</td>
+            <td>${participant.prizeNumber}</td>
+        `;
+        participantsTableBody.appendChild(row);
+    });
+    participantCount.textContent = `${participants.length} participantes`;
+
             });
             
             participantCount.textContent = `${participants.length} participantes`;
