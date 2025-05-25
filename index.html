@@ -534,3 +534,31 @@
 <!-- Toast content will be dynamically inserted -->
 </div>
 
+
+<script>
+window.onload = function () {
+  const startButton = document.getElementById("start-button");
+  const playerAliasInput = document.getElementById("player-alias");
+  const welcomeScreen = document.getElementById("welcome-screen");
+  const instructionsModal = document.getElementById("instructions-modal");
+  const playerNameDisplay = document.getElementById("player-result-name");
+
+  startButton.addEventListener("click", function () {
+    const alias = playerAliasInput.value.trim();
+    if (!alias) {
+      alert("Por favor ingresá tu alias");
+      return;
+    }
+
+    if (!window.gameState) window.gameState = {};
+    gameState.playerData = {
+      alias: alias,
+      prizeNumber: Math.floor(Math.random() * 100000)
+    };
+
+    playerNameDisplay.textContent = alias;
+    welcomeScreen.classList.add("hidden");
+    instructionsModal.classList.remove("hidden");
+  });
+};
+</script>
